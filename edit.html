@@ -5,13 +5,25 @@
         <link rel="icon" type="image/x-icon" href="favicon.ico">
         <meta name=“theme-color” content=“#0069aa”>
     </head>
-    <body style="background-color: #0069aa; color: white; font-size: 150%;">
+    <body style="background-color: #0069aa; color: white; font-size: 150%;" onload="load()">
         <div>info</div>
-        
         <textarea id="info" rows="10" cols="100"></textarea>
         
         <div>vcard</div>
-        
         <textarea id="vcard" rows="10" cols="100"></textarea>
+
+        <button onclick="save()">save</button>
+        
+        <script>
+            function load() {
+                document.getElementById('info').value = localStorage.getItem('info');
+                document.getElementById('vcard').value = localStorage.getItem('vcard');
+            }
+            
+            function save() {
+                localStorage.setItem('info', document.getElementById('info').value);
+                localStorage.setItem('vcard', document.getElementById('vcard').value);
+            }
+        </script>
     </body>
 </html>
