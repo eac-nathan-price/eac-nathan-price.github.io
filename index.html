@@ -12,10 +12,15 @@
   <script src="https://cdn.jsdelivr.net/npm/qrcode-svg"></script>
 
   <style>
+    .row {
+      flex: auto;
+    }
     .x {
+      flex: auto;
       background-color: black;
     }
     .o {
+      flex: auto;
       background-color: white;
     }
   </style>
@@ -41,7 +46,7 @@
       let length = modules.length;
       for (let y = 0; y < length; y++) {
         let row = document.createElement('div');
-        row.style.display = 'flex';
+        row.classList.add('row');
         for (let x = 0; x < length; x++) {
           let module = modules[x][y];
           ascii += (module ? 'x' : ' ');
