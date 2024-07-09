@@ -17,9 +17,19 @@
       height: 100%;
       font-family: 'Roboto', sans-serif;
     }
-    
+
+    #vcard {
+      width: 66.6vw;
+      height: 66.6vw;
+      display: block;
+      margin: auto;
+      border: 1px solid black;
+      display: flex;
+      flex-direction: column;
+    }
     .row {
       flex: auto;
+      display: flex;
     }
     .x {
       flex: auto;
@@ -38,7 +48,7 @@
   
   <div id="info" style="margin: 160px 80px; font-size: 125%;"></div>
   
-  <div id="vcard" style="width: 66.6vw; height: 66.6vw; display: block; margin: auto; border: 1px solid black; display: flex; flex-direction: column;"></div>
+  <div id="vcard"></div>
 
   <script>    
     function load() {
