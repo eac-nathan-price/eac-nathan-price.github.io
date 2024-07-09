@@ -48,15 +48,16 @@
   
   <div id="info" style="margin: 160px 80px; font-size: 125%;"></div>
   
-  <div id="vcard"></div>
+  <div id="qr"></div>
 
   <script>    
     function load() {
       document.getElementById('info').innerHTML = localStorage.getItem('info');
 
-      let el = document.getElementById('vcard');
-      let card = new QRCode(localStorage.getItem('vcard'));
-      let modules = card.qrcode.modules;
+      let vcard = localStorage.getItem('vcard');
+      let el = document.getElementById('qr');
+      let qr = new QRCode(vcard);
+      let modules = qr.qrcode.modules;
 
       let ascii = '';
       let length = modules.length;
@@ -74,6 +75,16 @@
         el.appendChild(row);
       }
       console.log(ascii);
+
+      el.addEventListener("click", async () => {
+        try {
+          const ndef = new NDEFReader();
+          await ndef.write(vcard);
+          console.log("nfc sent");
+        } catch (error) {
+          console.log("nfc error:" + error);
+        }
+      });
     }
   </script>
 </body>
