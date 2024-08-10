@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Contact</title>
+  <link rel="icon" type="image/x-icon" href="favicon.png">
+  <meta name="theme-color" content="#0069aa">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+
+  <script src="https://cdn.jsdelivr.net/npm/qrcode-svg@1.1.0"></script>
+
+  <style>
+    @property --bg-angle {
+      inherits: false;
+      initial-value: 0deg;
+      syntax: "<angle>";
+    }
+    @keyframes spin {
+      to {
+        --bg-angle: 360deg;
+      }
+    }
+    
+    html, body {
+      width: 100%;
+      height: 100%;
+      margin: 0px;
+      padding: 0px;
+      font-family: 'Roboto', sans-serif;
+    }
+
+    #box {
+      width: calc(66.6vw + 2rem);
+      height: calc(66.6vw + 2rem);
+      margin: auto;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 3rem;
+      box-shadow: 0.125rem 0.25rem 0.25rem 0.5rem oklch(0.1 0.37 315 / 0.25);
+      
+      animation: spin 4s infinite linear;
+      background:
+        linear-gradient(0deg, white, white) padding-box,
+        conic-gradient(
+          from var(--bg-angle) in oklch longer hue,
+          oklch(0.85 0.37 0) 0 0
+        ) border-box;
+      border: 1rem solid transparent;
+    }
+    #qr {
+      width: 66.6vw;
+      height: 66.6vw;
+      display: flex;
+      flex-direction: column;
+      background-color: white;
+    }
+    #qr * {
+      flex: auto;
+    }
+    .row {
+      display: flex;
+    }
+    .x {
+      background-color: black;
+    }
+    .o {
+      background-color: white;
+    }
+  </style>
+</head>
+  
+<body style="background: linear-gradient(#0069ab 0px, #0069ab 325px, #00BCD4); color: white; font-size: 300%;" onload="load()">
+  <img src="eaclogo.png" style="width: 600px; display: block; margin: auto;">
+  <div style="display: flex; justify-content: center; position: absolute; top: 260px; width: 100%;">Educational Assessments Corporation</div>
+  
+  <div id="info" style="margin: 120px 80px; font-size: 125%; text-shadow: 4px 4px 4px black;"></div>
+
+  <div id="box" class="o">
+    <div id="qr"></div>
+  </div>
+
+  <script>    
+    function load() {
+      document.getElementById('info').innerHTML = localStorage.getItem('info');
+
+      let vcard = localStorage.getItem('vcard');
+      let el = document.getElementById('qr');
+      let qr = new QRCode(vcard);
+      let modules = qr.qrcode.modules;
+
+      let ascii = '';
+      let length = modules.length;
+      for (let y = 0; y < length; y++) {
+        let row = document.createElement('div');
+        row.classList.add('row');
+        for (let x = 0; x < length; x++) {
+          let module = modules[x][y];
+          ascii += (module ? 'x' : ' ');
+          let col = document.createElement('span');
+          col.classList.add(module ? 'x' : 'o');
+          row.appendChild(col);
+        }
+        ascii += '\r\n';
+        el.appendChild(row);
+      }
+      console.log(ascii);
+
+      el.addEventListener("click", async () => {
+        try {
+          const ndef = new NDEFReader();
+          await ndef.write(vcard);
+          console.log("nfc sent");
+        } catch (error) {
+          console.log("nfc error:" + error);
+        }
+      });
+    }
+  </script>
+</body>
+</html>
